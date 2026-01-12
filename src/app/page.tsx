@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks";
 import { fetchWeather } from "@/lib/slices/weatherSlice";
 import CityCard from "@/components/CityCard/CityCard";
 import AddCity from "@/components/AddCity/AddCity";
+import CurrentDate from "@/components/CurrentDate/CurrentDate";
 import styles from "./page.module.scss";
 
 export default function Home() {
@@ -24,6 +25,7 @@ export default function Home() {
         <p className={styles.subtitle}>
           Add cities to track the weather
         </p>
+        <CurrentDate />
       </header>
 
       <AddCity />

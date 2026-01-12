@@ -1,0 +1,14 @@
+@import "@/styles/variables.scss";
+@import "@/styles/mixin.scss";
+
+.date {
+  font-size: 14px;
+  color: $text-color;
+  opacity: 0.6;
+  margin-top: 8px;
+
+  @include on-mobile {
+    font-size: 13px;
+  }
+}
+
