@@ -1,0 +1,90 @@
+@import "@/styles/variables.scss";
+@import "@/styles/mixin.scss";
+
+.container {
+  margin-bottom: 32px;
+
+  @include on-mobile {
+    margin-bottom: 24px;
+  }
+}
+
+.form {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+
+  @include on-mobile {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
+.input {
+  flex: 1;
+  padding: 14px 20px;
+  border: 2px solid $border-color;
+  border-radius: 12px;
+  font-size: 16px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &:focus {
+    border-color: $primary-color;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  }
+
+  &:disabled {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+  }
+
+  @include on-mobile {
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+}
+
+.button {
+  padding: 14px 32px;
+  background: $card-bg;
+  color: $white;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  white-space: nowrap;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  @include on-mobile {
+    padding: 12px 24px;
+    font-size: 14px;
+    width: 100%;
+  }
+}
+
+.error {
+  margin-top: 12px;
+  padding: 12px 16px;
+  background-color: #ffebee;
+  color: $error-color;
+  border-radius: 8px;
+  font-size: 14px;
+
+  @include on-mobile {
+    font-size: 12px;
+    padding: 10px 14px;
+  }
+}

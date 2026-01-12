@@ -1,0 +1,177 @@
+@import "@/styles/variables.scss";
+@import "@/styles/mixin.scss";
+
+.card {
+  background: $card-bg;
+  border-radius: 16px;
+  padding: 24px;
+  color: $white;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+
+  @include on-mobile {
+    padding: 16px;
+    min-height: 180px;
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.cityName {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+  flex: 1;
+
+  @include on-mobile {
+    font-size: 20px;
+  }
+}
+
+.country {
+  font-size: 18px;
+  font-weight: 400;
+  opacity: 0.9;
+
+  @include on-mobile {
+    font-size: 16px;
+  }
+}
+
+.removeButton {
+  background: rgba(255, 255, 255, 0.2);
+  color: $white;
+  font-size: 28px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+  flex-shrink: 0;
+  line-height: 1;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.weatherInfo {
+  flex: 1;
+}
+
+.temperature {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.weatherIcon {
+  width: 64px;
+  height: 64px;
+
+  @include on-mobile {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+.temp {
+  font-size: 48px;
+  font-weight: 700;
+
+  @include on-mobile {
+    font-size: 36px;
+  }
+}
+
+.description {
+  font-size: 18px;
+  margin-bottom: 16px;
+  text-transform: capitalize;
+
+  @include on-mobile {
+    font-size: 16px;
+  }
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 14px;
+  opacity: 0.9;
+
+  @include on-mobile {
+    font-size: 12px;
+  }
+}
+
+.refreshButton,
+.retryButton {
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: $white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  margin-top: 16px;
+  width: 100%;
+
+  &:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  @include on-mobile {
+    padding: 8px 16px;
+    font-size: 12px;
+  }
+}
+
+.loading,
+.error {
+  text-align: center;
+  padding: 20px;
+  font-size: 16px;
+
+  @include on-mobile {
+    font-size: 14px;
+    padding: 16px;
+  }
+}
+
+.error {
+  color: #ffebee;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
