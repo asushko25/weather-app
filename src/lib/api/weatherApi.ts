@@ -1,8 +1,17 @@
 import axios from "axios";
 import type { WeatherData, HourlyForecast } from "../slices/weatherSlice";
 
-const API_KEY = process.env.NEXT_PUBLIC_WEATHER_API_KEY;
 const BASE_URL = "https://api.openweathermap.org/data/2.5";
+
+const getApiKey = (): string => {
+  const apiKey = process.env.NEXT_PUBLIC_WEATHER_API_KEY;
+  if (!apiKey) {
+    throw new Error(
+      "NEXT_PUBLIC_WEATHER_API_KEY is not set. Please configure your API key in environment variables."
+    );
+  }
+  return apiKey;
+};
 
 interface OpenWeatherCurrentResponse {
   main: {
@@ -55,7 +64,7 @@ export const getCityCoordinates = async (
         params: {
           q: cityName,
           limit: 1,
-          appid: API_KEY,
+          appid: getApiKey(),
         },
       }
     );
@@ -94,7 +103,7 @@ export const fetchCurrentWeather = async (
         params: {
           lat: coords.lat,
           lon: coords.lon,
-          appid: API_KEY,
+          appid: getApiKey(),
           units: "metric",
         },
       }
@@ -131,7 +140,7 @@ export const fetchHourlyForecast = async (
         params: {
           lat,
           lon,
-          appid: API_KEY,
+          appid: getApiKey(),
           units: "metric",
         },
       }

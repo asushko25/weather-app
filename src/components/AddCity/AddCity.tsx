@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useAppDispatch } from "@/hooks";
 import { addCity } from "@/lib/slices/citiesSlice";
 import { fetchWeather } from "@/lib/slices/weatherSlice";
@@ -14,37 +14,45 @@ export default function AddCity() {
   const [error, setError] = useState<string | null>(null);
   const dispatch = useAppDispatch();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!cityName.trim()) {
-      setError("Please enter a city name");
-      return;
-    }
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+      if (!cityName.trim()) {
+        setError("Please enter a city name");
+        return;
+      }
 
-    setLoading(true);
+      setLoading(true);
+      setError(null);
+
+      try {
+        const coords = await getCityCoordinates(cityName.trim());
+        const cityId = `${coords.name},${coords.country}`;
+
+        const city: City = {
+          id: cityId,
+          name: coords.name,
+          country: coords.country,
+          lat: coords.lat,
+          lon: coords.lon,
+        };
+
+        dispatch(addCity(city));
+        dispatch(fetchWeather(cityId));
+        setCityName("");
+      } catch (err: any) {
+        setError(err.message || "Failed to find city");
+      } finally {
+        setLoading(false);
+      }
+    },
+    [cityName, dispatch]
+  );
+
+  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setCityName(e.target.value);
     setError(null);
-
-    try {
-      const coords = await getCityCoordinates(cityName.trim());
-      const cityId = `${coords.name},${coords.country}`;
-      
-      const city: City = {
-        id: cityId,
-        name: coords.name,
-        country: coords.country,
-        lat: coords.lat,
-        lon: coords.lon,
-      };
-
-      dispatch(addCity(city));
-      dispatch(fetchWeather(cityId));
-      setCityName("");
-    } catch (err: any) {
-      setError(err.message || "Failed to find city");
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -52,10 +60,7 @@ export default function AddCity() {
         <input
           type="text"
           value={cityName}
-          onChange={(e) => {
-            setCityName(e.target.value);
-            setError(null);
-          }}
+          onChange={handleInputChange}
           placeholder="Enter city name..."
           className={styles.input}
           disabled={loading}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import { fetchWeather, fetchHourlyWeather } from "@/lib/slices/weatherSlice";
@@ -37,6 +37,22 @@ export default function CityDetailPage() {
     );
   }, [city, cityId, dispatch, router]);
 
+  const handleBackClick = useCallback(() => {
+    router.push("/");
+  }, [router]);
+
+  const handleRetry = useCallback(() => {
+    if (!city) return;
+    dispatch(fetchWeather(cityId));
+    dispatch(
+      fetchHourlyWeather({
+        cityId,
+        lat: city.lat,
+        lon: city.lon,
+      })
+    );
+  }, [city, cityId, dispatch]);
+
   const chartData = useMemo(() => {
     if (!hourlyForecast || hourlyForecast.length === 0) return null;
 
@@ -57,7 +73,7 @@ export default function CityDetailPage() {
 
   return (
     <div className={styles.container}>
-      <button className={styles.backButton} onClick={() => router.push("/")}>
+      <button className={styles.backButton} onClick={handleBackClick}>
         Back to list
       </button>
 
@@ -75,21 +91,7 @@ export default function CityDetailPage() {
       {error && (
         <div className={styles.error}>
           Error: {error}
-          <button
-            className={styles.retryButton}
-            onClick={() => {
-              dispatch(fetchWeather(cityId));
-              if (city) {
-                dispatch(
-                  fetchHourlyWeather({
-                    cityId,
-                    lat: city.lat,
-                    lon: city.lon,
-                  })
-                );
-              }
-            }}
-          >
+          <button className={styles.retryButton} onClick={handleRetry}>
             Try again
           </button>
         </div>

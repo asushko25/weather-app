@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import { fetchWeather } from "@/lib/slices/weatherSlice";
@@ -25,19 +25,25 @@ export default function CityCard({ city }: CityCardProps) {
     }
   }, [city.id, dispatch, weather]);
 
-  const handleRefresh = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    dispatch(fetchWeather(city.id));
-  };
+  const handleRefresh = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation();
+      dispatch(fetchWeather(city.id));
+    },
+    [city.id, dispatch]
+  );
 
-  const handleRemove = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    dispatch(removeCity(city.id));
-  };
+  const handleRemove = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation();
+      dispatch(removeCity(city.id));
+    },
+    [city.id, dispatch]
+  );
 
-  const handleCardClick = () => {
+  const handleCardClick = useCallback(() => {
     router.push(`/city/${encodeURIComponent(city.id)}`);
-  };
+  }, [city.id, router]);
 
   return (
     <div className={styles.card} onClick={handleCardClick}>
